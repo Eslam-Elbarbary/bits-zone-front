@@ -18,9 +18,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Environment files
-.env
-.env.*
-!.env.example
+
 
 # Dependencies and build output
 node_modules/
