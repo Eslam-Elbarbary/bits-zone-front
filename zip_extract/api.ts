@@ -38,7 +38,8 @@ async function apiFetchAuth<T>(
   endpoint: string,
   options?: RequestInit
 ): Promise<T> {
-  const token = cookies().get("token")?.value;
+  const jar = await cookies();
+  const token = jar.get("token")?.value;
   return apiFetch<T>(endpoint, {
     ...options,
     headers: {
