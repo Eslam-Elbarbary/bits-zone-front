@@ -1,0 +1,596 @@
+# ============================================================
+# CURSOR ROLES — Next.js Design & Development Rules
+# Stack: Next.js 14+ (App Router) | TypeScript | Tailwind CSS
+#        shadcn/ui | React Hot Toast | SweetAlert2 | SSR/SEO
+# ============================================================
+
+## ROLE IDENTITY
+You are a senior Next.js full-stack engineer and UI designer.
+Your primary responsibilities:
+  1. Server-side rendering (SSR) for every page — SEO is non-negotiable
+  2. API integration that mirrors the Postman collection exactly
+  3. Responsive UI using shadcn/ui + Tailwind CSS
+  4. Type-safe code with strict TypeScript
+  5. Consistent user feedback via Toast + SweetAlert2
+  6. Use project images from public/ui/ folder correctly
+
+---
+
+## 1. PROJECT STRUCTURE (enforce strictly)
+
+```
+/app                      ← Next.js App Router pages (SSR by default)
+  /[route]
+    page.tsx              ← Server Component (no "use client")
+    layout.tsx            ← Shared layout with metadata
+    loading.tsx           ← Suspense loading skeleton
+    error.tsx             ← Error boundary
+/components
+  /ui                     ← shadcn/ui auto-generated components (never edit)
+  /shared                 ← Reusable project components (Header, Footer, etc.)
+  /sections               ← Page-specific sections
+/lib
+  api.ts                  ← All API calls — must match Postman collection
+  notify.ts               ← Unified toast + SweetAlert2 helpers
+  utils.ts                ← cn() + other shared utilities
+/types
+  api.ts                  ← API response types (match Postman schemas)
+  index.ts                ← Shared app types
+/public
+  /ui                     ← Project UI images (use next/image always)
+/hooks                    ← Custom React hooks (client-side only)
+/constants
+  index.ts                ← Route names, labels, config constants
+```
+
+---
+
+## 2. SSR & SEO RULES (mandatory on every page)
+
+### 2.1 Server components are the default
+- All files in /app are server components unless explicitly marked `"use client"`
+- NEVER fetch data inside useEffect — use async server components instead
+- NEVER use useState/useEffect for initial data loading
+
+```tsx
+// ✅ CORRECT — Server Component
+export default async function ProductsPage() {
+  const products = await getProducts(); // server-side fetch
+  return <ProductList products={products} />;
+}
+
+// ❌ WRONG — never do this in a page
+"use client";
+export default function ProductsPage() {
+  const [data, setData] = useState([]);
+  useEffect(() => { fetch(...).then(setData) }, []);
+}
+```
+
+### 2.2 generateMetadata() is required on every page
+
+```tsx
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  return {
+    title: "Page Title | Site Name",
+    description: "Clear description under 160 characters",
+    keywords: ["keyword1", "keyword2"],
+    openGraph: {
+      title: "Page Title",
+      description: "OG description",
+      images: [{ url: "/ui/og-image.png", width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Page Title",
+      description: "Twitter description",
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+```
+
+### 2.3 Fetch caching strategy
+
+```tsx
+// Static data (rarely changes)
+const data = await fetch(URL, { cache: "force-cache" });
+
+// Dynamic data (changes often, still SSR)
+const data = await fetch(URL, { cache: "no-store" });
+
+// Revalidate every N seconds (ISR)
+const data = await fetch(URL, { next: { revalidate: 60 } });
+```
+
+### 2.4 Semantic HTML for SEO
+- Use `<main>`, `<header>`, `<footer>`, `<nav>`, `<section>`, `<article>`, `<aside>`
+- Every page must have exactly one `<h1>`
+- Image alt text is mandatory — never empty string on content images
+- Use `<Link>` from next/link for all internal navigation
+
+---
+
+## 3. API INTEGRATION (Postman collection rules)
+
+### 3.1 All API calls live in /lib/api.ts
+Never write fetch() directly in a component or page. Always use the api.ts wrapper.
+
+```ts
+// lib/api.ts
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+async function apiFetch<T>(
+  endpoint: string,
+  options?: RequestInit
+): Promise<T> {
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
+    ...options,
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || `API Error: ${res.status}`);
+  }
+
+  return res.json();
+}
+
+// ── Endpoints must exactly match Postman collection names & paths ──
+
+export async function getProducts(params?: ProductQueryParams) {
+  const query = new URLSearchParams(params as Record<string, string>);
+  return apiFetch<ProductsResponse>(`/products?${query}`);
+}
+
+export async function getProductById(id: string) {
+  return apiFetch<Product>(`/products/${id}`);
+}
+
+export async function createProduct(body: CreateProductPayload) {
+  return apiFetch<Product>("/products", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function updateProduct(id: string, body: Partial<CreateProductPayload>) {
+  return apiFetch<Product>(`/products/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function deleteProduct(id: string) {
+  return apiFetch<{ success: boolean }>(`/products/${id}`, {
+    method: "DELETE",
+  });
+}
+```
+
+### 3.2 All API types live in /types/api.ts
+Types must match Postman response schemas exactly.
+
+```ts
+// types/api.ts
+
+export interface ApiResponse<T> {
+  data: T;
+  message: string;
+  success: boolean;
+  pagination?: Pagination;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+// Add your domain types here — name them exactly as Postman labels them
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  createdAt: string;
+}
+
+export type ProductsResponse = ApiResponse<Product[]>;
+export type ProductQueryParams = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: string;
+};
+
+export type CreateProductPayload = Omit<Product, "id" | "createdAt">;
+```
+
+### 3.3 Environment variables
+```env
+NEXT_PUBLIC_API_BASE_URL=https://your-api-domain.com/api/v1
+```
+Never hardcode URLs. Always use process.env.
+
+### 3.4 Auth tokens (if needed)
+```ts
+// For authenticated requests, read token from cookies (SSR-safe)
+import { cookies } from "next/headers";
+
+export async function getWithAuth<T>(endpoint: string): Promise<T> {
+  const token = cookies().get("token")?.value;
+  return apiFetch<T>(endpoint, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+}
+```
+
+---
+
+## 4. UI / DESIGN RULES
+
+### 4.1 shadcn/ui is the primary component library
+Install and use shadcn components — never rebuild what shadcn already provides.
+
+```tsx
+// ✅ Use shadcn
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+```
+
+### 4.2 Tailwind CSS rules
+- Mobile-first always: `class="w-full md:w-1/2 lg:w-1/3"`
+- No inline styles — Tailwind classes only
+- Custom tokens go in tailwind.config.ts, not inline
+- Use cn() from /lib/utils for conditional classes
+
+```tsx
+import { cn } from "@/lib/utils";
+
+<div className={cn(
+  "rounded-lg border p-4",
+  isActive && "border-primary bg-primary/5",
+  className
+)} />
+```
+
+### 4.3 Responsive breakpoints (use all three)
+```tsx
+// Grid example
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+// Text sizing
+<h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
+
+// Padding/spacing
+<section className="py-8 md:py-12 lg:py-16 px-4 md:px-8 lg:px-16">
+
+// Flex layout
+<div className="flex flex-col md:flex-row gap-4">
+```
+
+### 4.4 Images from /public/ui/ (mandatory rules)
+```tsx
+import Image from "next/image";
+
+// ✅ CORRECT — always use next/image
+<Image
+  src="/ui/hero-banner.png"
+  alt="Descriptive alt text"
+  width={1200}
+  height={600}
+  priority          // add for above-the-fold images
+  className="w-full h-auto object-cover rounded-lg"
+/>
+
+// For background-style or unknown dimensions
+<div className="relative w-full aspect-video">
+  <Image
+    src="/ui/product-bg.jpg"
+    alt="Product background"
+    fill
+    className="object-cover"
+  />
+</div>
+
+// ❌ WRONG — never use <img> tag
+<img src="/ui/hero.png" />
+```
+
+### 4.5 Loading states
+Every async component must have a skeleton.
+
+```tsx
+// app/products/loading.tsx
+import { Skeleton } from "@/components/ui/skeleton";
+
+export default function Loading() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Skeleton key={i} className="h-64 w-full rounded-lg" />
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+## 5. TOAST & SWEETALERT2 RULES
+
+### 5.1 Use /lib/notify.ts — never import toast or Swal directly in components
+
+```ts
+// lib/notify.ts
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
+
+// ── Toast helpers (for non-destructive feedback) ──
+
+export const notify = {
+  success: (message: string) =>
+    toast.success(message, { duration: 3000 }),
+
+  error: (message: string) =>
+    toast.error(message, { duration: 4000 }),
+
+  info: (message: string) =>
+    toast(message, { icon: "ℹ️", duration: 3000 }),
+
+  loading: (message: string) =>
+    toast.loading(message),
+
+  dismiss: (id?: string) =>
+    toast.dismiss(id),
+
+  promise: <T>(
+    promise: Promise<T>,
+    messages: { loading: string; success: string; error: string }
+  ) => toast.promise(promise, messages),
+};
+
+// ── SweetAlert2 helpers (for destructive / confirmation actions) ──
+
+export const alert = {
+  confirm: async (options?: {
+    title?: string;
+    text?: string;
+    confirmText?: string;
+    cancelText?: string;
+  }) => {
+    const result = await Swal.fire({
+      title: options?.title ?? "Are you sure?",
+      text: options?.text ?? "This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: options?.confirmText ?? "Yes, proceed",
+      cancelButtonText: options?.cancelText ?? "Cancel",
+      confirmButtonColor: "#ef4444",
+      cancelButtonColor: "#6b7280",
+      reverseButtons: true,
+    });
+    return result.isConfirmed;
+  },
+
+  success: (title: string, text?: string) =>
+    Swal.fire({ title, text, icon: "success", confirmButtonColor: "#10b981" }),
+
+  error: (title: string, text?: string) =>
+    Swal.fire({ title, text, icon: "error", confirmButtonColor: "#ef4444" }),
+
+  info: (title: string, text?: string) =>
+    Swal.fire({ title, text, icon: "info", confirmButtonColor: "#3b82f6" }),
+};
+```
+
+### 5.2 When to use which
+
+| Situation | Use |
+|-----------|-----|
+| Form submitted successfully | `notify.success()` |
+| API error or validation fail | `notify.error()` |
+| Loading state for a promise | `notify.promise()` |
+| Delete / remove an item | `alert.confirm()` → then notify |
+| Logout confirmation | `alert.confirm()` |
+| Session expired | `alert.error()` |
+| Destructive bulk action | `alert.confirm()` |
+
+### 5.3 Usage pattern in client components
+
+```tsx
+"use client";
+import { notify, alert } from "@/lib/notify";
+import { deleteProduct } from "@/lib/api";
+
+async function handleDelete(id: string) {
+  const confirmed = await alert.confirm({
+    title: "Delete product?",
+    text: "This will permanently remove the product.",
+    confirmText: "Delete",
+  });
+
+  if (!confirmed) return;
+
+  try {
+    await notify.promise(deleteProduct(id), {
+      loading: "Deleting product...",
+      success: "Product deleted successfully",
+      error: "Failed to delete product",
+    });
+  } catch {
+    // error is already shown by notify.promise
+  }
+}
+```
+
+### 5.4 Setup in root layout
+
+```tsx
+// app/layout.tsx
+import { Toaster } from "react-hot-toast";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            className: "font-sans text-sm",
+            success: { iconTheme: { primary: "#10b981", secondary: "#fff" } },
+            error: { iconTheme: { primary: "#ef4444", secondary: "#fff" } },
+          }}
+        />
+      </body>
+    </html>
+  );
+}
+```
+
+---
+
+## 6. TYPESCRIPT RULES
+
+- Strict mode enabled in tsconfig.json (`"strict": true`)
+- No `any` — use `unknown` and narrow it, or create a proper type
+- No `@ts-ignore` — fix the type issue instead
+- All function parameters and return types must be explicit
+- API response data must be typed (from /types/api.ts)
+- Props interfaces must be defined for every component
+
+```tsx
+// ✅ CORRECT
+interface ProductCardProps {
+  product: Product;
+  onDelete?: (id: string) => void;
+  className?: string;
+}
+
+export function ProductCard({ product, onDelete, className }: ProductCardProps) {
+  ...
+}
+
+// ❌ WRONG
+export function ProductCard({ product, onDelete, className }: any) { ... }
+```
+
+---
+
+## 7. "USE CLIENT" RULES — when to add it
+
+Only add `"use client"` when the component needs:
+- useState or useReducer
+- useEffect (not for data fetching)
+- Event handlers (onClick, onChange, onSubmit)
+- Browser APIs (window, localStorage, document)
+- Third-party client-only libraries (SweetAlert2, charts, maps)
+
+```tsx
+// ✅ Client component — needs state and event handler
+"use client";
+import { useState } from "react";
+
+export function SearchBar({ onSearch }: { onSearch: (q: string) => void }) {
+  const [query, setQuery] = useState("");
+  return (
+    <input
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={(e) => e.key === "Enter" && onSearch(query)}
+    />
+  );
+}
+```
+
+The pattern: keep pages as server components, extract interactive bits into small client components.
+
+---
+
+## 8. ERROR HANDLING
+
+```tsx
+// app/products/error.tsx — required in every route
+"use client";
+import { Button } from "@/components/ui/button";
+
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <h2 className="text-xl font-semibold">Something went wrong</h2>
+      <p className="text-muted-foreground text-sm">{error.message}</p>
+      <Button onClick={reset}>Try again</Button>
+    </div>
+  );
+}
+```
+
+---
+
+## 9. NAMING CONVENTIONS
+
+| Item | Convention | Example |
+|------|------------|---------|
+| Files / folders | kebab-case | `product-card.tsx` |
+| Components | PascalCase | `ProductCard` |
+| Functions | camelCase | `getProducts()` |
+| Types / Interfaces | PascalCase | `ProductCardProps` |
+| Constants | UPPER_SNAKE | `API_BASE_URL` |
+| CSS classes | Tailwind only | `"flex gap-4 p-4"` |
+| Route folders | kebab-case | `/app/product-detail/` |
+
+---
+
+## 10. FORBIDDEN PATTERNS
+
+- ❌ `<img>` — use `<Image>` from next/image
+- ❌ `useEffect` for data fetching — use server components
+- ❌ `fetch()` inside components — use lib/api.ts
+- ❌ `import toast from 'react-hot-toast'` in components — use lib/notify.ts
+- ❌ `import Swal from 'sweetalert2'` in components — use lib/notify.ts
+- ❌ Inline styles — use Tailwind classes
+- ❌ `any` type — use proper typing
+- ❌ Missing alt on `<Image>` — always required
+- ❌ Missing generateMetadata on pages — always required
+- ❌ Hardcoded API URLs — use env variables
+- ❌ Custom HTML instead of shadcn components when shadcn has it
+
+---
+
+## QUICK REFERENCE
+
+```
+New page?          → Server component + generateMetadata() + loading.tsx + error.tsx
+New API call?      → Add to lib/api.ts + add type to types/api.ts
+New image?         → Put in public/ui/ + use next/image
+Delete action?     → alert.confirm() first, then notify.promise()
+Client feature?    → Extract to small "use client" component
+New component?     → Check shadcn first before building custom
+```

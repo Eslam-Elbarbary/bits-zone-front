@@ -1,0 +1,270 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design reference: https://www.figma.com/design/krU1ACdYL6CcZPuQhj5VA9/PETS-ZONE */
+
+@layer base {
+  .theme {
+
+    --font-heading: var(--font-sans);
+
+    --font-sans: var(--font-sans)
+  }
+  :root {
+
+    --background: oklch(1 0 0);
+
+    --foreground: oklch(0.145 0 0);
+
+    --card: oklch(1 0 0);
+
+    --card-foreground: oklch(0.145 0 0);
+
+    --popover: oklch(1 0 0);
+
+    --popover-foreground: oklch(0.145 0 0);
+
+    /* Sky blue — primary CTAs & brand */
+    --primary: oklch(0.58 0.145 245);
+
+    --primary-foreground: oklch(0.99 0 0);
+
+    --secondary: oklch(0.97 0 0);
+
+    --secondary-foreground: oklch(0.205 0 0);
+
+    --muted: oklch(0.97 0 0);
+
+    --muted-foreground: oklch(0.556 0 0);
+
+    /* Papaya wash — soft highlights, chips, banners */
+    --accent: oklch(0.96 0.045 78);
+
+    --accent-foreground: oklch(0.38 0.11 58);
+
+    /* Saturated papaya — gradients, stars, warm badges */
+    --papaya: oklch(0.72 0.175 62);
+
+    --papaya-foreground: oklch(0.99 0 0);
+
+    --destructive: oklch(0.577 0.245 27.325);
+
+    --border: oklch(0.922 0 0);
+
+    --input: oklch(0.922 0 0);
+
+    --ring: oklch(0.58 0.12 245 / 0.4);
+
+    --chart-1: oklch(0.87 0 0);
+
+    --chart-2: oklch(0.556 0 0);
+
+    --chart-3: oklch(0.439 0 0);
+
+    --chart-4: oklch(0.371 0 0);
+
+    --chart-5: oklch(0.269 0 0);
+
+    --radius: 0.875rem;
+
+    --sidebar: oklch(0.985 0 0);
+
+    --sidebar-foreground: oklch(0.145 0 0);
+
+    --sidebar-primary: oklch(0.58 0.145 245);
+
+    --sidebar-primary-foreground: oklch(0.99 0 0);
+
+    --sidebar-accent: oklch(0.97 0 0);
+
+    --sidebar-accent-foreground: oklch(0.205 0 0);
+
+    --sidebar-border: oklch(0.922 0 0);
+
+    --sidebar-ring: oklch(0.708 0 0)
+  }
+  .dark {
+
+    --background: oklch(0.145 0 0);
+
+    --foreground: oklch(0.985 0 0);
+
+    --card: oklch(0.205 0 0);
+
+    --card-foreground: oklch(0.985 0 0);
+
+    --popover: oklch(0.205 0 0);
+
+    --popover-foreground: oklch(0.985 0 0);
+
+    --primary: oklch(0.74 0.11 245);
+
+    --primary-foreground: oklch(0.14 0.02 260);
+
+    --secondary: oklch(0.269 0 0);
+
+    --secondary-foreground: oklch(0.985 0 0);
+
+    --muted: oklch(0.269 0 0);
+
+    --muted-foreground: oklch(0.708 0 0);
+
+    --accent: oklch(0.32 0.06 58);
+
+    --accent-foreground: oklch(0.95 0.04 85);
+
+    --papaya: oklch(0.76 0.15 62);
+
+    --papaya-foreground: oklch(0.99 0 0);
+
+    --destructive: oklch(0.704 0.191 22.216);
+
+    --border: oklch(1 0 0 / 10%);
+
+    --input: oklch(1 0 0 / 15%);
+
+    --ring: oklch(0.74 0.1 245 / 0.45);
+
+    --chart-1: oklch(0.87 0 0);
+
+    --chart-2: oklch(0.556 0 0);
+
+    --chart-3: oklch(0.439 0 0);
+
+    --chart-4: oklch(0.371 0 0);
+
+    --chart-5: oklch(0.269 0 0);
+
+    --sidebar: oklch(0.205 0 0);
+
+    --sidebar-foreground: oklch(0.985 0 0);
+
+    --sidebar-primary: oklch(0.74 0.11 245);
+
+    --sidebar-primary-foreground: oklch(0.14 0.02 260);
+
+    --sidebar-accent: oklch(0.269 0 0);
+
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+
+    --sidebar-border: oklch(1 0 0 / 10%);
+
+    --sidebar-ring: oklch(0.556 0 0)
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  html {
+    @apply font-sans;
+  }
+
+  ::selection {
+    background: oklch(0.58 0.145 245 / 0.22);
+  }
+}
+
+@layer utilities {
+  .glass-surface {
+    @apply border border-white/45 bg-white/50 shadow-modern backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-white/40;
+  }
+
+  .dark .glass-surface {
+    @apply border-white/10 bg-zinc-900/50 supports-[backdrop-filter]:bg-zinc-900/40;
+  }
+}
+
+/* Soft snowfall — used by SnowOverlay (respects prefers-reduced-motion in component) */
+@keyframes snow-fall-modern {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  7% {
+    opacity: 0.92;
+  }
+  88% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(var(--snow-drift, 0px), 115vh, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+.snowflake-dot {
+  animation-name: snow-fall-modern;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 28% 28%, #ffffff 0%, rgba(186, 230, 253, 0.92) 45%, rgba(125, 211, 252, 0.35) 100%);
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.55),
+    0 0 3px rgba(56, 189, 248, 0.35);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snowflake-dot {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Brand logo «flakes» in snow — same fall path as dots */
+.snowflake-logo {
+  animation-name: snow-fall-modern;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  display: inline-block;
+  will-change: transform, opacity;
+  filter: saturate(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snowflake-logo {
+    animation: none !important;
+    display: none !important;
+  }
+}
+
+/* Hero banner — local snowfall (deterministic flakes use --hero-snow-drift) */
+@keyframes hero-banner-snow {
+  0% {
+    transform: translate3d(0, -4vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.88;
+  }
+  92% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(var(--hero-snow-drift, 0px), 108%, 0) rotate(220deg);
+    opacity: 0;
+  }
+}
+
+.hero-banner-snowflake {
+  animation-name: hero-banner-snow;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, rgba(224, 242, 254, 0.95) 50%, rgba(125, 211, 252, 0.4) 100%);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.65),
+    0 0 2px rgba(56, 189, 248, 0.45);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-banner-snowflake {
+    animation: none !important;
+    display: none;
+  }
+}
