@@ -153,7 +153,6 @@ export default async function ProductDetailPage({
       : null;
   const stockLabel = stockStatusLabel(product.stock_status);
   const sku = product.sku && String(product.sku).trim() ? String(product.sku).trim() : null;
-console.log(product);
   return (
     <div className="relative mx-auto max-w-7xl px-3 py-8 sm:px-4 md:py-12 lg:px-6">
       <div
