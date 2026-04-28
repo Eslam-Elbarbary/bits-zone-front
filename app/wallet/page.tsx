@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "سجل المحفظة",
-    description: "رصيد المحفظة وحركات الإيداع والسحب بالريال.",
+    description: "رصيد المحفظة وحركات الإيداع والسحب بالجنية المصري.",
   };
 }
 
@@ -84,7 +84,7 @@ export default async function WalletHistoryPage() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-sky-950 md:text-3xl">المحفظة</h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              رصيدك بالريال السعودي وآخر الحركات: شحن رصيد، خصم من طلب، أو استرجاع. يمكنك فتح الطلب المرتبط عند
+              رصيدك بالجنية المصري وآخر الحركات: شحن رصيد، خصم من طلب، أو استرجاع. يمكنك فتح الطلب المرتبط عند
               توفر رقمه.
             </p>
           </div>

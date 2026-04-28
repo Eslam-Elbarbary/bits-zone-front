@@ -131,9 +131,9 @@ export function formatPrice(value: number | string | undefined | null): string {
   if (value === undefined || value === null) return "—";
   const n = typeof value === "string" ? parseFloat(value) : value;
   if (Number.isNaN(n)) return String(value);
-  return new Intl.NumberFormat("ar-SA", {
+  return new Intl.NumberFormat("ar-EG", {
     style: "currency",
-    currency: "SAR",
+    currency: "EGP",
     maximumFractionDigits: 2,
   }).format(n);
 }

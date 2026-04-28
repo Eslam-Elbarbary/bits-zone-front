@@ -395,7 +395,7 @@ export function ProductsFiltersForm({
         <FilterSection
           icon={Wallet}
           title="نطاق السعر"
-          description="بالريال السعودي — يُطبَّق بعد توقف الكتابة قليلاً."
+          description="بالجنية المصري — يُطبَّق بعد توقف الكتابة قليلاً."
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
@@ -432,7 +432,7 @@ export function ProductsFiltersForm({
                   className="flex shrink-0 items-center border-s border-border bg-muted/50 px-3 text-xs font-semibold tabular-nums text-muted-foreground"
                   aria-hidden
                 >
-                  ر.س
+                  جنية مصري
                 </span>
               </div>
             </div>
@@ -470,7 +470,7 @@ export function ProductsFiltersForm({
                   className="flex shrink-0 items-center border-s border-border bg-muted/50 px-3 text-xs font-semibold tabular-nums text-muted-foreground"
                   aria-hidden
                 >
-                  ر.س
+                  جنية مصري
                 </span>
               </div>
             </div>
