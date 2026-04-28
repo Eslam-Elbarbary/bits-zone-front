@@ -76,7 +76,7 @@ function collectImageCandidates(product: Product): unknown[] {
   const candidates: unknown[] = [];
   const p = product as Record<string, unknown>;
   if (product.image != null) candidates.push(product.image);
-  if (product.thumbnail != null) candidates.push(product.thumbnail);
+  if (product.thumb_image != null) candidates.push(product.thumb_image);
   if (p.main_image != null) candidates.push(p.main_image);
   if (p.cover_image != null) candidates.push(p.cover_image);
   if (p.primary_image != null) candidates.push(p.primary_image);
