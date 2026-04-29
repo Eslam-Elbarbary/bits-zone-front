@@ -132,7 +132,6 @@ async function apiFetchForm<T>(
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const base = getBaseUrl();
   const url = path.startsWith("http") ? path : `${base}${path.startsWith("/") ? path : `/${path}`}`;
-
   const { cache, next, ...rest } = init;
   const res = await fetch(url, {
     ...rest,
@@ -167,6 +166,7 @@ export async function apiFetchAuth<T>(
   if (!("Authorization" in auth)) {
     throw new Error("يجب تسجيل الدخول لإتمام هذا الإجراء");
   }
+
   return apiFetch<T>(path, {
     ...init,
     headers: { ...auth, ...(init.headers as Record<string, string>) },

@@ -13,14 +13,14 @@ export function MarketingStrip() {
         <span className="hidden sm:inline">شحن سريع · دفع آمن · دعم يهتم</span>
         <span className="sm:hidden">توصيل موثوق</span>
         <span className="hidden h-3 w-px bg-sky-300/50 sm:block" aria-hidden />
-        <a href="tel:+966500000000" className="inline-flex items-center gap-1 tabular-nums hover:text-primary" dir="ltr">
+        <a href="tel:+201103830072" className="inline-flex items-center gap-1 tabular-nums hover:text-primary" dir="ltr">
           <Phone className="size-3 opacity-60" aria-hidden />
-          +966 50 000 0000
+          +201103830072
         </a>
         <span className="hidden h-3 w-px bg-sky-300/50 md:block" aria-hidden />
-        <a href="mailto:care@petszone.sa" className="hidden items-center gap-1 hover:text-primary md:inline-flex">
+        <a href="mailto:petszone2019@gmail.com" className="hidden items-center gap-1 hover:text-primary md:inline-flex">
           <Mail className="size-3 opacity-60" aria-hidden />
-          care@petszone.sa
+          petszone2019@gmail.com
         </a>
       </div>
     </div>

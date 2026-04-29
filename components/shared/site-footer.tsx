@@ -76,26 +76,27 @@ export function SiteFooter() {
                 imageClassName="h-9 w-auto max-w-[200px] object-contain object-start md:h-10 drop-shadow-sm"
               />
               <p className="mt-4 text-sm leading-relaxed text-sky-800/80">
-                متجرك المتخصص للعناية بالأطفال — تغذية آمنة، ملابس، ألعاب ومستلزمات في مكان واحد.
-              </p>
+              توصيل داخل القاهرة الجديده في نفس اليوم 
+وجميع محافظات مصر خلال 48 ساعه
+متجرك المتخصص للعناية بحيوانك الاليف وتوفير جميع مستلزماتهم من دراي فود ويت فود اكسسورات ملابس سراير              </p>
               <div className="mt-4 space-y-2 text-sm text-sky-800/75">
                 <a
-                  href="tel:+966500000000"
+                  href="tel:+201103830072"
                   className="flex items-center gap-2 transition-colors hover:text-primary"
                 >
                   <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Phone className="size-3.5" aria-hidden />
                   </span>
-                  <span dir="ltr">+966 50 000 0000</span>
+                  <span dir="ltr">+201103830072</span>
                 </a>
                 <a
-                  href="mailto:care@petszone.sa"
+                  href="mailto:petszone2019@gmail.com"
                   className="flex items-center gap-2 transition-colors hover:text-primary"
                 >
                   <span className="flex size-8 items-center justify-center rounded-lg bg-papaya/15 text-papaya">
                     <Mail className="size-3.5" aria-hidden />
                   </span>
-                  care@petszone.sa
+                  petszone2019@gmail.com
                 </a>
                 <p className="flex items-start gap-2 pt-1">
                   <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-700">
