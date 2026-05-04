@@ -73,7 +73,7 @@ export function SiteFooter() {
             <div className="rounded-2xl border border-white/80 bg-white/60 p-5 shadow-modern backdrop-blur-md sm:col-span-2 lg:col-span-1">
               <SiteLogoLink
                 className="block"
-                imageClassName="h-9 w-auto max-w-[200px] object-contain object-start md:h-10 drop-shadow-sm"
+                imageClassName="h-12 w-auto max-w-[240px] object-contain object-start md:h-14 drop-shadow-sm"
               />
               <p className="mt-4 text-sm leading-relaxed text-sky-800/80">
                 متجرك المتخصص للعناية بحيوانك الاليف وتوفير جميع مستلزماتهم من

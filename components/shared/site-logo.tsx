@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ROUTES, SITE_NAME } from "@/constants";
 import { cn } from "@/lib/utils";
 
-const LOGO_SRC = "/logo-pets-zone.svg";
+/** Official PETS ZONE mark (PNG, black canvas — works on light header/footer with rounded container in header if needed) */
+const LOGO_SRC = "/logo-pets-zone.png";
 
 export function SiteLogo({
   className,
@@ -17,10 +18,13 @@ export function SiteLogo({
     <Image
       src={LOGO_SRC}
       alt={SITE_NAME}
-      width={210}
-      height={50}
+      width={180}
+      height={180}
       unoptimized
-      className={cn("h-9 w-auto min-w-[140px] max-w-[min(100%,260px)] object-contain object-start md:h-10 md:min-w-[160px]", className)}
+      className={cn(
+        "h-11 w-auto min-w-[88px] max-w-[min(100%,260px)] object-contain object-start md:h-12 md:min-w-[96px] md:max-w-[280px]",
+        className
+      )}
       priority={priority}
     />
   );

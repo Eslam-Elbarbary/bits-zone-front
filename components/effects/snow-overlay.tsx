@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const LOGO_SRC = "/logo-pets-zone.svg";
+const LOGO_SRC = "/logo-pets-zone.png";
 
 type Flake = {
   id: number;
@@ -109,7 +109,7 @@ export function SnowOverlay() {
               src={LOGO_SRC}
               alt=""
               width={48}
-              height={12}
+              height={48}
               unoptimized
               className="h-auto w-full object-contain opacity-90 drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]"
             />

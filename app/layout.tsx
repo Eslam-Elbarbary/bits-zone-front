@@ -34,11 +34,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ar_SA",
   },
-  icons: {
-    icon: "/logo-pets-zone.svg",
-    shortcut: "/logo-pets-zone.svg",
-    apple: "/logo-pets-zone.svg",
-  },
+  /** Favicons: `app/icon.png` + `app/apple-icon.png` (PETS ZONE logo) */
   robots: { index: true, follow: true },
 };
 
