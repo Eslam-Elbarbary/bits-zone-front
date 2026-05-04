@@ -3,7 +3,7 @@ import { Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SiteLogoLink } from "@/components/shared/site-logo";
-import { ROUTES } from "@/constants";
+import { ROUTES, SITE_BRAND } from "@/constants";
 import { cn } from "@/lib/utils";
 
 const linkClass =
@@ -38,7 +38,7 @@ export function SiteFooter() {
               </div>
               <h2 className="text-xl font-bold text-sky-950 md:text-2xl">اشترك في العروض الحصرية</h2>
               <p className="mt-2 text-sm leading-relaxed text-sky-800/75">
-                عروض العناية بالأطفال والوافد الجديد — بريد خفيف دون إزعاج.
+                عروض وخصومات على أكل، رمل، ألعاب ومستلزمات الحيوانات — بريد خفيف دون إزعاج.
               </p>
             </div>
             <form
@@ -177,7 +177,9 @@ export function SiteFooter() {
 
         <div className="border-t border-sky-200/50 bg-white/50 py-5 backdrop-blur-sm">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-sky-700/70 sm:flex-row sm:text-start">
-            <p>© {new Date().getFullYear()} خطوات صغيرة. جميع الحقوق محفوظة.</p>
+            <p>
+              © {new Date().getFullYear()} {SITE_BRAND}. جميع الحقوق محفوظة.
+            </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm sm:justify-end">
               <a href="#" className={cn(linkClass, "font-medium")}>
                 فيسبوك

@@ -38,9 +38,11 @@ export function CategoryCarouselBanner({ items, className }: CategoryCarouselBan
       <div className="relative mx-auto max-w-7xl px-4 py-5 md:py-6">
         <div className="mb-4 text-center md:mb-5">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/90 md:text-[11px]">
-            العناية بالأطفال
+            تصفح الفئات 🐾
           </p>
-          <p className="mt-1 text-sm font-semibold text-zinc-900 md:text-base">اختر فئة وابدأ رحلة تسوق آمنة</p>
+          <p className="mt-1 text-sm font-semibold text-zinc-900 md:text-base">
+            اختار اللي حيوانك محتاجه من الأكل، الرمل، الألعاب وكل المستلزمات بسهولة.
+          </p>
         </div>
         <CategoryCircleCarousel items={items} />
       </div>
