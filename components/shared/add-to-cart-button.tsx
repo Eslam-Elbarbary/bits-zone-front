@@ -53,15 +53,14 @@ export function AddToCartButton({
       onClick={() => {
         if (!canAdd) return;
         startTransition(async () => {
-          try {
-            await addToCartAction(String(productId), resolved);
+          const result = await addToCartAction(String(productId), resolved);
+          if (result.ok) {
             notify.success("تمت إضافة المنتج للسلة");
             dispatchCartUpdated();
             router.refresh();
             onSuccess?.();
-          } catch (e) {
-            const raw = e instanceof Error ? e.message : "تعذر الإضافة للسلة — سجّل الدخول إن لزم";
-            notify.error(friendlyCartError(raw));
+          } else {
+            notify.error(friendlyCartError(result.error));
           }
         });
       }}

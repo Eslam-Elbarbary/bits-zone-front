@@ -115,8 +115,8 @@ export function HeaderChrome({
           <div className="flex min-w-0 shrink-0 items-center gap-2">
             <SiteLogoLink
               priority
-              className="min-w-0 rounded-lg px-0.5 py-0 transition-opacity hover:opacity-90"
-              imageClassName="h-7 w-auto max-w-[min(100%,180px)] object-contain object-start md:h-8 md:max-w-[200px]"
+              className="min-w-0 rounded-xl shadow-sm ring-1 ring-black/15 transition-opacity hover:opacity-95"
+              imageClassName="h-12 w-auto max-w-[min(100%,200px)] object-contain object-center md:h-14 md:max-w-[240px]"
             />
             <MobileNav />
           </div>

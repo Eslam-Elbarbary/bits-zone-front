@@ -1,4 +1,7 @@
-export const SITE_NAME = "خطوات صغيرة — العناية الآمنة بالأطفال";
+/** Short brand for copyright, page title suffix, placeholders */
+export const SITE_BRAND = "PETS ZONE";
+
+export const SITE_NAME = "PETS ZONE — مستلزمات الحيوانات الأليفة";
 
 export const ROUTES = {
   home: "/",
@@ -49,12 +52,12 @@ export const PRODUCT_SORT = {
   priceDesc: "price_desc",
 } as const;
 
-/** Home strip — quick searches; align with API categories when ready */
-export const CHILD_QUICK_CATEGORIES = [
-  { key: "feeding", label: "التغذية والرضاعة", icon: "heart" as const },
-  { key: "diapers", label: "الحفاضات والعناية", icon: "sparkles" as const },
-  { key: "clothes", label: "ملابس أطفال", icon: "bag" as const },
-  { key: "toys", label: "ألعاب وتنمية", icon: "star" as const },
-  { key: "health", label: "صحة وسلامة", icon: "shield" as const },
-  { key: "nursery", label: "غرفة ومستلزمات", icon: "package" as const },
+/** Home strip — quick searches when API categories are empty */
+export const PET_QUICK_CATEGORIES = [
+  { key: "food", label: "أكل جاف ورطب", icon: "heart" as const },
+  { key: "litter", label: "رمل ونظافة", icon: "sparkles" as const },
+  { key: "accessories", label: "إكسسوارات وملابس", icon: "bag" as const },
+  { key: "toys", label: "ألعاب وتسلية", icon: "star" as const },
+  { key: "health", label: "صحة وعناية", icon: "shield" as const },
+  { key: "beds", label: "أسِرّة ومستلزمات", icon: "package" as const },
 ] as const;

@@ -8,7 +8,7 @@ import { BrowseCategoryGrid } from "@/components/sections/browse-category-grid";
 import { ProductRowSection } from "@/components/sections/product-row-section";
 import { FeaturedProductsCarousel } from "@/components/sections/featured-products-carousel";
 import { loadHomeData } from "@/lib/api-data";
-import { CHILD_QUICK_CATEGORIES, ROUTES, SITE_NAME } from "@/constants";
+import { PET_QUICK_CATEGORIES, ROUTES, SITE_NAME } from "@/constants";
 import { dedupeProductsById, resolveImageSrc } from "@/lib/product-utils";
 import type { Category } from "@/types/api";
 
@@ -38,7 +38,7 @@ function buildCategoryCarouselItems(categories: Category[]) {
     }
     return out;
   }
-  return CHILD_QUICK_CATEGORIES.map((c, i) => ({
+  return PET_QUICK_CATEGORIES.map((c, i) => ({
     id: -(i + 1),
     label: c.label,
     href: `${ROUTES.shop}?search=${encodeURIComponent(c.label)}`,
@@ -50,10 +50,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: SITE_NAME,
     description:
-      "تسوّق منتجات العناية بالأطفال — تغذية آمنة، حفاضات، ملابس، ألعاب تعليمية وتوصيل موثوق لبيتك.",
+      "تسوّق مستلزمات الحيوانات الأليفة — أكل، رمل، ألعاب، علاج وتوصيل داخل القاهرة الجديدة وجميع المحافظات.",
     openGraph: {
       title: SITE_NAME,
-      description: "كل ما يحتاجه طفلك في مكان واحد — بجودة تثق بها.",
+      description: "كل ما يحتاجه حيوانك الأليف في مكان واحد — بجودة تثق بها.",
     },
   };
 }
@@ -84,7 +84,7 @@ export default async function HomePage() {
       <CategoryCarouselBanner items={carouselItems} />
       <FeaturedProductsCarousel
         title="منتجات مميزة"
-        subtitle="مختارات آمنة ومجرّبة للعناية اليومية بطفلك — من التغذية حتى اللعب"
+        subtitle="مختارات موثوقة لعناية حيوانك — من الأكل والرمل حتى الألعاب والعلاج"
         eyebrow="مختارات المحرر"
         products={featuredUnique}
         queryHref="/products?featured=1"

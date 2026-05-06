@@ -29,14 +29,14 @@ export function CartActions() {
           onSubmit={(e) => {
             e.preventDefault();
             startCoupon(async () => {
-              try {
-                await applyCouponAction(code);
+              const result = await applyCouponAction(code);
+              if (result.ok) {
                 notify.success("تم تطبيق الكوبون");
                 setCode("");
                 dispatchCartUpdated();
                 router.refresh();
-              } catch (err) {
-                notify.actionError(err instanceof Error ? err.message : "تعذر تطبيق الكوبون");
+              } else {
+                notify.actionError(result.error);
               }
             });
           }}
@@ -81,13 +81,13 @@ export function CartActions() {
             });
             if (!ok) return;
             startClear(async () => {
-              try {
-                await clearCartAction();
+              const result = await clearCartAction();
+              if (result.ok) {
                 notify.success("تم تفريغ السلة");
                 dispatchCartUpdated();
                 router.refresh();
-              } catch (err) {
-                notify.actionError(err instanceof Error ? err.message : "تعذر تفريغ السلة");
+              } else {
+                notify.actionError(result.error);
               }
             });
           }}

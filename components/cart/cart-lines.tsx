@@ -102,11 +102,11 @@ export function CartLines({
       syncTimers.current[key] = setTimeout(() => {
         delete syncTimers.current[key];
         startTransition(async () => {
-          try {
-            await updateCartQuantityAction(productId, nextQty, variantId);
+          const result = await updateCartQuantityAction(productId, nextQty, variantId);
+          if (result.ok) {
             dispatchCartUpdated();
-          } catch (err) {
-            notify.actionError(err instanceof Error ? err.message : "فشل تحديث الكمية");
+          } else {
+            notify.actionError(result.error);
             router.refresh();
           }
         });
@@ -256,13 +256,13 @@ export function CartLines({
                     if (!ok) return;
                     setRows((prev) => prev.filter((r) => r.key !== row.key));
                     startTransition(async () => {
-                      try {
-                        await removeCartItemAction(pid, vid);
+                      const result = await removeCartItemAction(pid, vid);
+                      if (result.ok) {
                         notify.success("تم الحذف");
                         dispatchCartUpdated();
                         router.refresh();
-                      } catch (err) {
-                        notify.actionError(err instanceof Error ? err.message : "فشل الحذف");
+                      } else {
+                        notify.actionError(result.error);
                         router.refresh();
                       }
                     });

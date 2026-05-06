@@ -5,17 +5,20 @@ const ITEMS = [
   {
     icon: Truck,
     title: "توصيل موثوق",
-    desc: "طلبات العناية بالأطفال حتى باب منزلك بسرعة",
+    body: [
+      "توصيل داخل القاهرة الجديدة في نفس اليوم.",
+      "جميع محافظات مصر خلال 48 ساعة.",
+    ] as const,
   },
   {
     icon: ShieldCheck,
     title: "دفع آمن",
-    desc: "تسوق بثقة لمنتجات أطفالك",
+    body: "تسوق بثقة لمنتجات حيوانك الأليف بأسعار واضحة",
   },
   {
     icon: Headphones,
     title: "دعم يهتم",
-    desc: "فريق جاهز لمساعدتك في اختيار الأنسب لعمر طفلك",
+    body: "فريق جاهز يساعدك تختار الأنسب لنوع حيوانك واحتياجاته",
   },
 ] as const;
 
@@ -47,12 +50,12 @@ export function TrustStrip({ className }: { className?: string }) {
             تسوّق بثقة وراحة
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground md:text-[15px]">
-            نرافقك من الطلب حتى الاستلام — توصيل آمن، دفع موثوق، وفريق يهتم بتفاصيل احتياج طفلك.
+            نرافقك من الطلب حتى الاستلام — توصيل سريع، دفع موثوق، وفريق يهتم براحة حيوانك الأليف.
           </p>
         </header>
 
         <ul className="grid gap-4 sm:grid-cols-3 sm:gap-5 md:gap-6">
-          {ITEMS.map(({ icon: Icon, title, desc }) => (
+          {ITEMS.map(({ icon: Icon, title, body }) => (
             <li key={title}>
               <article
                 className={cn(
@@ -77,9 +80,17 @@ export function TrustStrip({ className }: { className?: string }) {
                   </span>
                   <div className="min-w-0 flex-1 text-start">
                     <h3 className="text-base font-bold leading-snug text-sky-950 md:text-lg">{title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground md:text-[15px] md:leading-relaxed">
-                      {desc}
-                    </p>
+                    {Array.isArray(body) ? (
+                      <ul className="mt-2 list-disc space-y-1.5 pe-4 text-sm leading-relaxed text-muted-foreground marker:text-primary/80 md:text-[15px] md:leading-relaxed">
+                        {body.map((line) => (
+                          <li key={line}>{line}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground md:text-[15px] md:leading-relaxed">
+                        {body}
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>

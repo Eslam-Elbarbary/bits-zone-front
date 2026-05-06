@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Slider } from "@/types/api";
-import { ROUTES } from "@/constants";
+import { ROUTES, SITE_BRAND } from "@/constants";
 import { resolveImageSrc } from "@/lib/product-utils";
 import { cn } from "@/lib/utils";
 
@@ -20,37 +20,42 @@ type NormalizedSlide = {
   description: string;
   href: string;
   placeholderEmoji: string;
+  ctaLabel: string;
 };
 
-const FALLBACK_DESCRIPTION =
-  "منتجات مختارة بعناية لراحة الأم والطفل — جودة موثوقة، أسعار واضحة، وتوصيل حتى باب منزلك.";
-
-const FALLBACK_SLIDES: NormalizedSlide[] = [
+/** Copy for pet supplies — paired with each slider image by index (API titles are not used). */
+const PET_HERO_TEMPLATES: Omit<NormalizedSlide, "key" | "imageSrc">[] = [
   {
-    key: "fb-1",
-    imageSrc: null,
-    title: "عناية كاملة لطفلك في مكان واحد",
-    description: "تغذية، حفاضات، ملابس وألعاب آمنة — مع توصيل سريع ودعم يهتم بتفاصيلك.",
+    title: "خصومات قوية على كل مستلزمات الحيوانات",
+    description:
+      "من الأكل لحد الألعاب وكل اللي محتاجه. متوفر كل الأوزان والأنواع، وشحن سريع لكل المحافظات.",
     href: ROUTES.products,
-    placeholderEmoji: "👶",
+    placeholderEmoji: "🐾",
+    ctaLabel: "استفد بالعرض الآن",
   },
   {
-    key: "fb-2",
-    imageSrc: null,
-    title: "عروض الشتاء الدافئة",
-    description: "مستلزمات موسمية وقطع مختارة بأسعار مريحة — تسوّق بثقة من بيتك.",
+    title: "كل اللي حيوانك محتاجه في مكان واحد",
+    description:
+      "أكل – رمل – ألعاب – مستلزمات – علاج. أفضل أسعار + توصيل سريع لكل المحافظات. اطلب دلوقتي وخلي راحتك أسهل.",
+    href: ROUTES.products,
+    placeholderEmoji: "🐕",
+    ctaLabel: "تسوق الآن",
+  },
+  {
+    title: "عروض الشتاء لمستلزمات الحيوانات الأليفة",
+    description:
+      "دفايات، أكل موسمي، وألعاب تنشيط — خصومات لفترة محدودة وتوصيل لكل المحافظات.",
     href: `${ROUTES.products}?sort=latest`,
-    placeholderEmoji: "🧸",
-  },
-  {
-    key: "fb-3",
-    imageSrc: null,
-    title: "جودة تليق بصغارك",
-    description: FALLBACK_DESCRIPTION,
-    href: `${ROUTES.products}?featured=1`,
-    placeholderEmoji: "⭐",
+    placeholderEmoji: "🐱",
+    ctaLabel: "تسوق الآن",
   },
 ];
+
+const FALLBACK_SLIDES: NormalizedSlide[] = PET_HERO_TEMPLATES.map((t, i) => ({
+  key: `pet-fb-${i + 1}`,
+  imageSrc: null,
+  ...t,
+}));
 
 function normalizeSliders(sliders: Slider[]): NormalizedSlide[] {
   if (!sliders.length) return FALLBACK_SLIDES;
@@ -58,13 +63,15 @@ function normalizeSliders(sliders: Slider[]): NormalizedSlide[] {
   const mapped = sliders.map((s, index) => {
     const raw = s.image != null ? resolveImageSrc(s.image) : null;
     const imageSrc = raw && raw !== "/ui/placeholder-product.svg" ? raw : null;
+    const template = PET_HERO_TEMPLATES[index % PET_HERO_TEMPLATES.length]!;
     return {
       key: `s-${s.id}-${index}`,
       imageSrc,
-      title: s.title?.trim() || FALLBACK_SLIDES[index % FALLBACK_SLIDES.length]!.title,
-      description: FALLBACK_DESCRIPTION,
-      href: s.link?.trim() || ROUTES.products,
-      placeholderEmoji: FALLBACK_SLIDES[index % FALLBACK_SLIDES.length]!.placeholderEmoji,
+      title: template.title,
+      description: template.description,
+      href: s.link?.trim() || template.href,
+      placeholderEmoji: template.placeholderEmoji,
+      ctaLabel: template.ctaLabel,
     };
   });
 
@@ -82,32 +89,32 @@ const HERO_SNOW = Array.from({ length: 56 }, (_, i) => ({
 
 const FLOATING_ANIMALS = [
   {
-    emoji: "🐰",
+    emoji: "🐕",
     className:
       "bottom-[9%] start-[4%] text-[2rem] sm:text-4xl md:text-5xl animate-animal-float-a drop-shadow-[0_4px_12px_rgba(0,0,0,0.15)] [animation-delay:0.15s]",
   },
   {
-    emoji: "🐻",
+    emoji: "🐈",
     className:
       "bottom-[14%] end-[6%] text-[1.85rem] sm:text-4xl md:text-[2.75rem] animate-animal-float-b drop-shadow-[0_4px_12px_rgba(0,0,0,0.12)] [animation-delay:0.45s]",
   },
   {
-    emoji: "🦊",
+    emoji: "🐾",
     className:
       "top-[26%] start-[8%] text-[1.65rem] sm:text-3xl md:text-4xl animate-animal-waddle opacity-95 drop-shadow-md [animation-delay:0.1s]",
   },
   {
-    emoji: "🐧",
+    emoji: "🦴",
     className:
       "top-[20%] end-[10%] text-[1.5rem] sm:text-3xl md:text-4xl animate-animal-float-c opacity-90 drop-shadow-md [animation-delay:0.6s]",
   },
   {
-    emoji: "🦁",
+    emoji: "🐰",
     className:
       "bottom-[7%] start-[38%] text-[1.5rem] sm:text-3xl opacity-85 animate-animal-float-b drop-shadow-sm [animation-delay:0.3s] max-md:hidden",
   },
   {
-    emoji: "🐼",
+    emoji: "🐠",
     className:
       "bottom-[20%] start-[48%] text-[1.4rem] sm:text-3xl animate-animal-float-a opacity-80 [animation-delay:0.9s] md:start-[52%]",
   },
@@ -235,7 +242,7 @@ export function HeroBannerCarousel({ sliders }: { sliders: Slider[] }) {
                     {slide.placeholderEmoji}
                   </span>
                   <span className="rounded-full bg-white/50 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-primary/80 ring-1 ring-primary/15 backdrop-blur-sm">
-                    خطوات صغيرة
+                    {SITE_BRAND}
                   </span>
                 </div>
               )}
@@ -290,7 +297,7 @@ export function HeroBannerCarousel({ sliders }: { sliders: Slider[] }) {
                 variant="secondary"
                 className="relative w-fit rounded-xl px-8 font-bold text-primary shadow-lg shadow-black/10"
               >
-                <Link href={slide.href}>تسوق الآن</Link>
+                <Link href={slide.href}>{slide.ctaLabel}</Link>
               </Button>
             </div>
           ))}

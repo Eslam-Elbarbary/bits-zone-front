@@ -41,8 +41,8 @@ export function BrowseCategoryGrid({ categories }: { categories: Category[] }) {
         >
           <SectionHeading
             eyebrow="فئات"
-            title="تصفح الفئات"
-            subtitle="اختر الفئة واكتشف منتجات العناية والراحة لطفلك. اضغط «كل الفئات» لعرض الدليل الكامل مع البحث."
+            title="تصفح الفئات 🐾"
+            subtitle="اختار اللي حيوانك محتاجه من الأكل، الرمل، الألعاب وكل المستلزمات بسهولة."
           />
           <Button
             size="sm"

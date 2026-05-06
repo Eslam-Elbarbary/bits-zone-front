@@ -5,7 +5,7 @@ import { Providers } from "@/components/providers";
 import { SiteHeader } from "@/components/shared/site-header";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
-import { SITE_NAME } from "@/constants";
+import { SITE_BRAND, SITE_NAME } from "@/constants";
 
 const alexandria = Alexandria({
   subsets: ["arabic", "latin"],
@@ -16,17 +16,25 @@ const alexandria = Alexandria({
 export const metadata: Metadata = {
   title: {
     default: SITE_NAME,
-    template: `%s | خطوات صغيرة`,
+    template: `%s | ${SITE_BRAND}`,
   },
   description:
-    "متجر متخصص في العناية بالأطفال — تغذية، حفاضات، ملابس، ألعاب تعليمية وتوصيل موثوق.",
-  keywords: ["عناية بالأطفال", "مستلزمات أطفال", "تغذية الأطفال", "حفاضات", "ملابس أطفال", "ألعاب أطفال"],
+    "متجر مستلزمات الحيوانات الأليفة — أكل جاف ورطب، رمل، ألعاب، علاج، وتوصيل داخل القاهرة الجديدة والمحافظات.",
+  keywords: [
+    "مستلزمات حيوانات أليفة",
+    "أكل كلاب وقطط",
+    "رمل قطط",
+    "PET SHOP مصر",
+    "PETS ZONE",
+    "توصيل مستلزمات حيوانات",
+  ],
   openGraph: {
     title: SITE_NAME,
-    description: "عناية آمنة ومستلزمات موثوقة لطفلك في مكان واحد.",
+    description: "كل ما يحتاجه حيوانك الأليف في مكان واحد — جودة موثوقة وتوصيل سريع.",
     type: "website",
     locale: "ar_SA",
   },
+  /** Favicons: `app/icon.png` + `app/apple-icon.png` (PETS ZONE logo) */
   robots: { index: true, follow: true },
 };
 

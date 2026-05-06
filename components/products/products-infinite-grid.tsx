@@ -146,7 +146,7 @@ export function ProductsInfiniteGrid({
           "dark:bg-card/20 dark:ring-white/[0.06]"
         )}
       >
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:gap-6">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 md:gap-5 lg:grid-cols-4 lg:gap-6">
           {products.map((p, index) => (
             <ProductCard key={`${p.id}-inf-${index}`} product={p} />
           ))}

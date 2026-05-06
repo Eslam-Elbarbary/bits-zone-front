@@ -3,7 +3,7 @@ import { Mail, MapPin, Phone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SiteLogoLink } from "@/components/shared/site-logo";
-import { ROUTES } from "@/constants";
+import { ROUTES, SITE_BRAND } from "@/constants";
 import { cn } from "@/lib/utils";
 
 const linkClass =
@@ -38,7 +38,7 @@ export function SiteFooter() {
               </div>
               <h2 className="text-xl font-bold text-sky-950 md:text-2xl">اشترك في العروض الحصرية</h2>
               <p className="mt-2 text-sm leading-relaxed text-sky-800/75">
-                عروض العناية بالأطفال والوافد الجديد — بريد خفيف دون إزعاج.
+                عروض وخصومات على أكل، رمل، ألعاب ومستلزمات الحيوانات — بريد خفيف دون إزعاج.
               </p>
             </div>
             <form
@@ -73,29 +73,30 @@ export function SiteFooter() {
             <div className="rounded-2xl border border-white/80 bg-white/60 p-5 shadow-modern backdrop-blur-md sm:col-span-2 lg:col-span-1">
               <SiteLogoLink
                 className="block"
-                imageClassName="h-9 w-auto max-w-[200px] object-contain object-start md:h-10 drop-shadow-sm"
+                imageClassName="h-12 w-auto max-w-[240px] object-contain object-start md:h-14 drop-shadow-sm"
               />
               <p className="mt-4 text-sm leading-relaxed text-sky-800/80">
-                متجرك المتخصص للعناية بالأطفال — تغذية آمنة، ملابس، ألعاب ومستلزمات في مكان واحد.
-              </p>
+              توصيل داخل القاهرة الجديده في نفس اليوم 
+وجميع محافظات مصر خلال 48 ساعه
+متجرك المتخصص للعناية بحيوانك الاليف وتوفير جميع مستلزماتهم من دراي فود ويت فود اكسسورات ملابس سراير              </p>
               <div className="mt-4 space-y-2 text-sm text-sky-800/75">
                 <a
-                  href="tel:+966500000000"
+                  href="tel:+201103830072"
                   className="flex items-center gap-2 transition-colors hover:text-primary"
                 >
                   <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Phone className="size-3.5" aria-hidden />
                   </span>
-                  <span dir="ltr">+966 50 000 0000</span>
+                  <span dir="ltr">+201103830072</span>
                 </a>
                 <a
-                  href="mailto:care@petszone.sa"
+                  href="mailto:petszone2019@gmail.com"
                   className="flex items-center gap-2 transition-colors hover:text-primary"
                 >
                   <span className="flex size-8 items-center justify-center rounded-lg bg-papaya/15 text-papaya">
                     <Mail className="size-3.5" aria-hidden />
                   </span>
-                  care@petszone.sa
+                  petszone2019@gmail.com
                 </a>
                 <p className="flex items-start gap-2 pt-1">
                   <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-700">
@@ -176,7 +177,9 @@ export function SiteFooter() {
 
         <div className="border-t border-sky-200/50 bg-white/50 py-5 backdrop-blur-sm">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center text-xs text-sky-700/70 sm:flex-row sm:text-start">
-            <p>© {new Date().getFullYear()} خطوات صغيرة. جميع الحقوق محفوظة.</p>
+            <p>
+              © {new Date().getFullYear()} {SITE_BRAND}. جميع الحقوق محفوظة.
+            </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm sm:justify-end">
               <a href="#" className={cn(linkClass, "font-medium")}>
                 فيسبوك

@@ -134,20 +134,20 @@ export default async function ContactPage({
               </CardHeader>
               <CardContent className="space-y-3 pt-4 text-sm">
                 <a
-                  href="tel:+966500000000"
+                  href="tel:+201103830072"
                   className="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 font-semibold text-sky-950 transition-colors hover:border-sky-100 hover:bg-sky-50/50"
                 >
                   <Phone className="size-4 shrink-0 text-primary" aria-hidden />
                   <span dir="ltr" className="tabular-nums">
-                    +966 50 000 0000
+                    +201103830072
                   </span>
                 </a>
                 <a
-                  href="mailto:care@petszone.sa"
+                  href="mailto:petszone2019@gmail.com"
                   className="flex items-center gap-3 rounded-xl border border-transparent px-2 py-2 font-medium text-sky-950 transition-colors hover:border-sky-100 hover:bg-sky-50/50"
                 >
                   <Mail className="size-4 shrink-0 text-primary" aria-hidden />
-                  care@petszone.sa
+                  petszone2019@gmail.com
                 </a>
               </CardContent>
             </Card>
