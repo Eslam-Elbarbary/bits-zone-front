@@ -17,6 +17,7 @@ import {
   requestRefund,
 } from "@/lib/api";
 import { extractList } from "@/lib/api-data";
+import { endpointPaymentMethod, extractPaymentRedirectUrl } from "@/lib/payment";
 import { rethrowIfRedirect } from "@/lib/server-actions";
 import { formatPrice } from "@/lib/product-utils";
 import { getUserFacingErrorDescription } from "@/lib/user-facing-errors";
@@ -146,14 +147,18 @@ async function reorderAction(formData: FormData) {
 async function payOrderAction(formData: FormData) {
   "use server";
   const id = String(formData.get("order_id") ?? "");
-  const method = String(formData.get("payment_method") ?? "").trim();
+  const method = endpointPaymentMethod(String(formData.get("payment_method") ?? ""));
   try {
     if (!method) {
       redirect(`${ROUTES.orders}/${id}?error=${encodeURIComponent("اختر طريقة الدفع")}`);
     }
-    await payOrder(id, method);
+    const payRes = await payOrder(id, method);
     revalidatePath(`${ROUTES.orders}/${id}`);
     revalidatePath(ROUTES.orders);
+    const redirectUrl = extractPaymentRedirectUrl(payRes);
+    if (redirectUrl) {
+      redirect(redirectUrl);
+    }
     redirect(`${ROUTES.orders}/${id}?ok=paid`);
   } catch (e) {
     rethrowIfRedirect(e);
@@ -356,17 +361,23 @@ export default async function OrderDetailsPage({
             </p>
           </CardHeader>
           <CardContent className="space-y-5 text-sm">
-            <form action={payOrderAction} className="space-y-2">
+            <form action={payOrderAction} className="space-y-3 rounded-2xl border border-sky-100/90 bg-gradient-to-b from-sky-50/50 to-white p-3.5 shadow-sm ring-1 ring-sky-100/70">
               <input type="hidden" name="order_id" value={id} />
-              <p className="text-xs text-muted-foreground">أدخل طريقة الدفع ثم أكمل الدفع.</p>
-              <input
-                name="payment_method"
-                placeholder="مثال: cash، visa، mada"
-                className="h-10 w-full rounded-xl border border-input bg-background/80 px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
-                dir="ltr"
-              />
-              <Button type="submit" className="w-full">
-                دفع الطلب
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-semibold text-sky-900">بوابة الدفع</p>
+                <Badge variant="secondary" className="rounded-full px-2.5 py-0.5 text-[11px] font-bold" dir="ltr">
+                  FAWRY
+                </Badge>
+              </div>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                سيتم تحويلك تلقائياً إلى صفحة فوري الآمنة لإتمام عملية الدفع.
+              </p>
+              <input type="hidden" name="payment_method" value="FAWRY" />
+              <div className="flex h-10 items-center rounded-xl border border-sky-200/80 bg-white px-3 text-sm font-semibold text-sky-950 shadow-sm" dir="ltr">
+                fawry
+              </div>
+              <Button type="submit" className="h-11 w-full font-bold shadow-sm">
+                دفع الطلب عبر فوري
               </Button>
             </form>
 

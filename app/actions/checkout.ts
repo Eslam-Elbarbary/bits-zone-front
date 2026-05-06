@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createOrder, payOrder } from "@/lib/api";
+import { endpointPaymentMethod, extractPaymentRedirectUrl } from "@/lib/payment";
 import { rethrowIfRedirect } from "@/lib/server-actions";
 import { ROUTES } from "@/constants";
 import type { Order } from "@/types/api";
@@ -27,7 +28,7 @@ export async function placeOrderAction(formData: FormData) {
   const notes = String(formData.get("notes") ?? "").trim();
   const use_wallet = String(formData.get("use_wallet") ?? "").trim();
   const use_points = String(formData.get("use_points") ?? "").trim();
-  const payChoice = String(formData.get("pay_choice") ?? "COD").trim();
+  const payChoice = String(formData.get("pay_choice") ?? "FAWRY").trim();
   const paymentOther = String(formData.get("payment_method_other") ?? "").trim();
 
   let payment_method = "";
@@ -41,9 +42,9 @@ export async function placeOrderAction(formData: FormData) {
         )}`
       );
     }
-    payment_method = paymentOther.trim();
+    payment_method = endpointPaymentMethod(paymentOther);
   } else {
-    payment_method = payChoice;
+    payment_method = endpointPaymentMethod(payChoice);
   }
 
   try {
@@ -63,7 +64,11 @@ export async function placeOrderAction(formData: FormData) {
     }
     if (payment_method) {
       try {
-        await payOrder(idStr, payment_method);
+        const payRes = await payOrder(idStr, payment_method);
+        const redirectUrl = extractPaymentRedirectUrl(payRes);
+        if (redirectUrl) {
+          redirect(redirectUrl);
+        }
       } catch (payErr) {
         rethrowIfRedirect(payErr);
         redirect(
