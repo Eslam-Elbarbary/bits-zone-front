@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: projectRoot,
   },
+  images: {
+     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "petszone-eg.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

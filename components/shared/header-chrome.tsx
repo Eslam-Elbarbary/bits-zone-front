@@ -104,8 +104,9 @@ export function HeaderChrome({
   }, [refreshFavoriteCount]);
 
   return (
-    <header className="sticky top-0 z-40">
-      <div className="border-b border-sky-200/40 bg-[linear-gradient(180deg,oklch(0.98_0.02_245/0.6)_0%,oklch(0.99_0.01_245/0.4)_100%)] px-3 py-2 md:px-4 md:py-2">
+    <>
+      <header className="fixed inset-x-0 top-0 z-50">
+        <div className="border-b border-sky-200/40 bg-[linear-gradient(180deg,oklch(0.98_0.02_245/0.6)_0%,oklch(0.99_0.01_245/0.4)_100%)] px-3 py-2 md:px-4 md:py-2">
         <div
           className={cn(
             "mx-auto flex max-w-7xl items-center gap-2 md:gap-3",
@@ -142,7 +143,9 @@ export function HeaderChrome({
         <div className="mx-auto mt-2 max-w-7xl md:hidden">
           <HeaderNav variant="mobileBar" />
         </div>
-      </div>
-    </header>
+        </div>
+      </header>
+      <div aria-hidden className="h-[7.25rem] md:h-[5.75rem]" />
+    </>
   );
 }

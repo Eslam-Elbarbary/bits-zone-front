@@ -7,6 +7,9 @@ import { SiteFooter } from "@/components/shared/site-footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { SITE_BRAND, SITE_NAME } from "@/constants";
 
+const SITE_URL = "https://petszone-eg.com";
+const LOGO_URL = `${SITE_URL}/logo-pets-zone.png`;
+
 const alexandria = Alexandria({
   subsets: ["arabic", "latin"],
   variable: "--font-sans",
@@ -14,12 +17,14 @@ const alexandria = Alexandria({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: "PETS ZONE",
   title: {
     default: SITE_NAME,
     template: `%s | ${SITE_BRAND}`,
   },
   description:
-    "متجر مستلزمات الحيوانات الأليفة — أكل جاف ورطب، رمل، ألعاب، علاج، وتوصيل داخل القاهرة الجديدة والمحافظات.",
+    "PETS ZONE متجر إلكتروني متخصص في مستلزمات الحيوانات الأليفة: أطعمة أصلية، رمل ونظافة، ألعاب وإكسسوارات، ومنتجات عناية مع شحن سريع داخل مصر.",
   keywords: [
     "مستلزمات حيوانات أليفة",
     "أكل كلاب وقطط",
@@ -30,11 +35,34 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: SITE_NAME,
-    description: "كل ما يحتاجه حيوانك الأليف في مكان واحد — جودة موثوقة وتوصيل سريع.",
+    description:
+      "كل ما يحتاجه حيوانك الأليف في مكان واحد: منتجات موثوقة، أسعار مناسبة، وتجربة شراء سهلة مع شحن سريع.",
     type: "website",
     locale: "ar_SA",
+    siteName: "PETS ZONE",
+    url: SITE_URL,
+    images: [
+      {
+        url: "/logo-pets-zone.png",
+        width: 512,
+        height: 512,
+        alt: "PETS ZONE Logo",
+      },
+    ],
   },
-  /** Favicons: `app/icon.png` + `app/apple-icon.png` (PETS ZONE logo) */
+  twitter: {
+    card: "summary",
+    title: SITE_NAME,
+    description:
+      "متجر PETS ZONE لمستلزمات الحيوانات الأليفة في مصر: طعام، عناية، ألعاب وإكسسوارات مع شحن سريع.",
+    images: ["/logo-pets-zone.png"],
+  },
+  icons: {
+    icon: "/logo-pets-zone.png?v=6",
+    shortcut: "/logo-pets-zone.png?v=6",
+    apple: "/logo-pets-zone.png?v=6",
+  },
+  alternates: { canonical: "/" },
   robots: { index: true, follow: true },
 };
 
@@ -50,6 +78,19 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Providers>
+          <script
+            type="application/ld+json"
+            // Helps Google pick the right brand/logo in search results.
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "PETS ZONE",
+                url: SITE_URL,
+                logo: LOGO_URL,
+              }),
+            }}
+          />
           <div className="flex min-h-screen flex-col">
             <SiteHeader />
             <main className="flex-1 text-pretty">{children}</main>
